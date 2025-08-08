@@ -1,0 +1,5 @@
+{"id": 0, "name": "TechFlow", "description": "AI-powered automation platform for enterprise teams", "industry": "Enterprise Software", "funding": "$15M Series A", "location": "San Francisco CA", "founded": 2021, "team_size": 45}
+{"id": 1, "name": "GreenEnergy", "description": "Renewable energy solutions for residential and commercial buildings", "industry": "Clean Energy", "funding": "$8M Seed", "location": "Austin TX", "founded": 2022, "team_size": 23}
+{"id": 2, "name": "HealthAI", "description": "Machine learning platform for early disease detection and diagnosis", "industry": "Healthcare", "funding": "$25M Series B", "location": "Boston MA", "founded": 2020, "team_size": 67}
+{"id": 3, "name": "EduTech", "description": "Personalized learning platform using adaptive algorithms", "industry": "Education", "funding": "$12M Series A", "location": "Seattle WA", "founded": 2021, "team_size": 34}
+{"id": 4, "name": "FinTechPro", "description": "Blockchain-based payment processing and financial services", "industry": "Financial Services", "funding": "$30M Series C", "location": "New York NY", "founded": 2019, "team_size": 89}
