@@ -3,6 +3,26 @@
   max-width: 1200px;
   margin: 0 auto;
   padding: 0 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+}
+
+/* Ensure all content is centered */
+.container > * {
+  width: 100%;
+  text-align: center;
+}
+
+/* Center the main content wrapper */
+.content-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: 800px;
 }
 
 /* Custom scrollbar */

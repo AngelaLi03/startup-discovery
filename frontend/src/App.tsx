@@ -59,36 +59,37 @@ function App() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <div className="container mx-auto px-4 py-8">
-        <header className="text-center mb-8">
-          <h1 className="text-4xl font-bold text-gray-900 mb-2">
+    <div className="min-h-screen w-full bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center">
+      <div className="container mx-auto px-4 py-8 w-full">
+        {/* Centered Header */}
+        <header className="text-center mb-12 w-full">
+          <h1 className="text-5xl font-bold text-gray-900 mb-4 bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
             Startup Discovery
           </h1>
-          <p className="text-gray-600">
+          <p className="text-xl text-gray-600 max-w-2xl mx-auto">
             RAG-powered semantic search and Q&A for startup data
           </p>
         </header>
 
-        {/* Tab Navigation */}
-        <div className="flex justify-center mb-8">
-          <div className="flex bg-white rounded-lg shadow-sm border">
+        {/* Centered Tab Navigation */}
+        <div className="flex justify-center mb-10 w-full">
+          <div className="flex bg-white rounded-xl shadow-lg border border-gray-200 overflow-hidden">
             <button
               onClick={() => setActiveTab('search')}
-              className={`px-6 py-3 rounded-l-lg font-medium transition-colors ${
+              className={`px-8 py-4 font-semibold transition-all duration-300 ${
                 activeTab === 'search'
-                  ? 'bg-blue-500 text-white'
-                  : 'bg-white text-gray-700 hover:bg-gray-50'
+                  ? 'bg-gradient-to-r from-blue-500 to-blue-600 text-white shadow-lg transform scale-105'
+                  : 'bg-white text-gray-700 hover:bg-gray-50 hover:text-blue-600'
               }`}
             >
               🔍 Search Startups
             </button>
             <button
               onClick={() => setActiveTab('qa')}
-              className={`px-6 py-3 rounded-r-lg font-medium transition-colors ${
+              className={`px-8 py-4 font-semibold transition-all duration-300 ${
                 activeTab === 'qa'
-                  ? 'bg-blue-500 text-white'
-                  : 'bg-white text-gray-700 hover:bg-gray-50'
+                  ? 'bg-gradient-to-r from-blue-500 to-blue-600 text-white shadow-lg transform scale-105'
+                  : 'bg-white text-gray-700 hover:bg-gray-50 hover:text-blue-600'
               }`}
             >
               💬 Ask Questions
@@ -96,110 +97,118 @@ function App() {
           </div>
         </div>
 
-        {/* Search Tab */}
-        {activeTab === 'search' && (
-          <div className="max-w-4xl mx-auto">
-            <div className="bg-white rounded-lg shadow-sm border p-6 mb-6">
-              <h2 className="text-2xl font-semibold mb-4">Search Startups</h2>
-              <div className="flex gap-4">
-                <input
-                  type="text"
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  placeholder="e.g., AI companies in healthcare, fintech startups in NYC..."
-                  className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                  onKeyPress={(e) => e.key === 'Enter' && handleSearch()}
-                />
-                <button
-                  onClick={handleSearch}
-                  disabled={loading}
-                  className="px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 disabled:opacity-50"
-                >
-                  {loading ? 'Searching...' : 'Search'}
-                </button>
-              </div>
-            </div>
+        {/* Centered Content */}
+        <div className="content-wrapper">
+            {/* Search Tab */}
+            {activeTab === 'search' && (
+              <div className="space-y-6">
+                {/* Search Input */}
+                <div className="bg-white rounded-xl shadow-lg border border-gray-200 p-8 text-center">
+                  <h2 className="text-3xl font-bold text-gray-900 mb-6">Search Startups</h2>
+                  <div className="flex gap-4 max-w-2xl mx-auto">
+                    <input
+                      type="text"
+                      value={searchQuery}
+                      onChange={(e) => setSearchQuery(e.target.value)}
+                      placeholder="e.g., AI companies in healthcare, fintech startups in NYC..."
+                      className="flex-1 px-6 py-4 border border-gray-300 rounded-lg focus:ring-4 focus:ring-blue-200 focus:border-blue-500 text-lg transition-all duration-300"
+                      onKeyPress={(e) => e.key === 'Enter' && handleSearch()}
+                    />
+                    <button
+                      onClick={handleSearch}
+                      disabled={loading}
+                      className="px-8 py-4 bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-lg hover:from-blue-600 hover:to-blue-700 disabled:opacity-50 font-semibold text-lg shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
+                    >
+                      {loading ? '🔍 Searching...' : 'Search'}
+                    </button>
+                  </div>
+                </div>
 
-            {/* Search Results */}
-            {searchResults.length > 0 && (
-              <div className="space-y-4">
-                {searchResults.map((startup) => (
-                  <div key={startup.id} className="bg-white rounded-lg shadow-sm border p-6">
-                    <div className="flex justify-between items-start mb-3">
-                      <h3 className="text-xl font-semibold text-gray-900">
-                        {startup.name}
-                      </h3>
-                      <span className="text-sm text-gray-500">
-                        Rank #{startup.rank} (Score: {startup.similarity_score.toFixed(3)})
-                      </span>
+                {/* Search Results */}
+                {searchResults.length > 0 && (
+                  <div className="space-y-6">
+                    <h3 className="text-2xl font-bold text-gray-900 text-center mb-6">
+                      Found {searchResults.length} Results
+                    </h3>
+                    {searchResults.map((startup, index) => (
+                      <div key={startup.id} className="bg-white rounded-xl shadow-lg border border-gray-200 p-8 hover:shadow-xl transition-all duration-300 transform hover:scale-[1.02]">
+                        <div className="flex justify-between items-start mb-4">
+                          <h3 className="text-2xl font-bold text-gray-900">
+                            {startup.name}
+                          </h3>
+                          <span className="text-sm text-gray-500 bg-gray-100 px-3 py-1 rounded-full">
+                            Rank #{startup.rank} (Score: {startup.similarity_score.toFixed(3)})
+                          </span>
+                        </div>
+                        <p className="text-gray-700 text-lg mb-6 leading-relaxed">{startup.description}</p>
+                        <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+                          <div className="bg-blue-50 p-4 rounded-lg">
+                            <span className="font-semibold text-blue-600 block mb-2">Industry</span>
+                            <p className="text-gray-900 font-medium">{startup.industry}</p>
+                          </div>
+                          <div className="bg-green-50 p-4 rounded-lg">
+                            <span className="font-semibold text-green-600 block mb-2">Location</span>
+                            <p className="text-gray-900 font-medium">{startup.location}</p>
+                          </div>
+                          <div className="bg-purple-50 p-4 rounded-lg">
+                            <span className="font-semibold text-purple-600 block mb-2">Funding</span>
+                            <p className="text-gray-900 font-medium">{startup.funding}</p>
+                          </div>
+                          <div className="bg-orange-50 p-4 rounded-lg">
+                            <span className="font-semibold text-orange-600 block mb-2">Team Size</span>
+                            <p className="text-gray-900 font-medium">{startup.team_size} people</p>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            )}
+
+            {/* Q&A Tab */}
+            {activeTab === 'qa' && (
+              <div className="space-y-6">
+                {/* Q&A Input */}
+                <div className="bg-white rounded-xl shadow-lg border border-gray-200 p-8 text-center">
+                  <h2 className="text-3xl font-bold text-gray-900 mb-6">Ask Questions</h2>
+                  <div className="flex gap-4 max-w-2xl mx-auto">
+                    <input
+                      type="text"
+                      value={qaQuery}
+                      onChange={(e) => setQaQuery(e.target.value)}
+                      placeholder="e.g., What are the most funded AI startups? Which startups are in healthcare?"
+                      className="flex-1 px-6 py-4 border border-gray-300 rounded-lg focus:ring-4 focus:ring-blue-200 focus:border-blue-500 text-lg transition-all duration-300"
+                      onKeyPress={(e) => e.key === 'Enter' && handleAsk()}
+                    />
+                    <button
+                      onClick={handleAsk}
+                      disabled={loading}
+                      className="px-8 py-4 bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-lg hover:from-blue-600 hover:to-blue-700 disabled:opacity-50 font-semibold text-lg shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
+                    >
+                      {loading ? '🤔 Thinking...' : 'Ask'}
+                    </button>
+                  </div>
+                </div>
+
+                {/* Q&A Response */}
+                {qaResponse && (
+                  <div className="bg-white rounded-xl shadow-lg border border-gray-200 p-8">
+                    <div className="mb-6">
+                      <h3 className="text-xl font-bold text-gray-900 mb-3 text-center">Question</h3>
+                      <p className="text-gray-700 italic text-lg text-center bg-gray-50 p-4 rounded-lg">"{qaResponse.question}"</p>
                     </div>
-                    <p className="text-gray-700 mb-3">{startup.description}</p>
-                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
-                      <div>
-                        <span className="font-medium text-gray-600">Industry:</span>
-                        <p className="text-gray-900">{startup.industry}</p>
-                      </div>
-                      <div>
-                        <span className="font-medium text-gray-600">Location:</span>
-                        <p className="text-gray-900">{startup.location}</p>
-                      </div>
-                      <div>
-                        <span className="font-medium text-gray-600">Funding:</span>
-                        <p className="text-gray-900">{startup.funding}</p>
-                      </div>
-                      <div>
-                        <span className="font-medium text-gray-600">Team Size:</span>
-                        <p className="text-gray-900">{startup.team_size} people</p>
-                      </div>
+                    <div>
+                      <h3 className="text-xl font-bold text-gray-900 mb-3 text-center">Answer</h3>
+                      <p className="text-gray-700 leading-relaxed text-lg bg-blue-50 p-6 rounded-lg">{qaResponse.answer}</p>
                     </div>
                   </div>
-                ))}
+                )}
               </div>
             )}
           </div>
-        )}
-
-        {/* Q&A Tab */}
-        {activeTab === 'qa' && (
-          <div className="max-w-4xl mx-auto">
-            <div className="bg-white rounded-lg shadow-sm border p-6 mb-6">
-              <h2 className="text-2xl font-semibold mb-4">Ask Questions</h2>
-              <div className="flex gap-4">
-                <input
-                  type="text"
-                  value={qaQuery}
-                  onChange={(e) => setQaQuery(e.target.value)}
-                  placeholder="e.g., What are the most funded AI startups? Which startups are in healthcare?"
-                  className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                  onKeyPress={(e) => e.key === 'Enter' && handleAsk()}
-                />
-                <button
-                  onClick={handleAsk}
-                  disabled={loading}
-                  className="px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 disabled:opacity-50"
-                >
-                  {loading ? 'Thinking...' : 'Ask'}
-                </button>
-              </div>
-            </div>
-
-            {/* Q&A Response */}
-            {qaResponse && (
-              <div className="bg-white rounded-lg shadow-sm border p-6">
-                <div className="mb-4">
-                  <h3 className="text-lg font-semibold text-gray-900 mb-2">Question:</h3>
-                  <p className="text-gray-700 italic">"{qaResponse.question}"</p>
-                </div>
-                <div>
-                  <h3 className="text-lg font-semibold text-gray-900 mb-2">Answer:</h3>
-                  <p className="text-gray-700 leading-relaxed">{qaResponse.answer}</p>
-                </div>
-              </div>
-            )}
-          </div>
-        )}
+        </div>
       </div>
-    </div>
   )
 }
 
