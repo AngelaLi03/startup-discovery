@@ -12,7 +12,23 @@ interface Startup {
   founded: number
   team_size: number
   similarity_score: number
+  similarity_percentage: number
+  similarity_label: string
+  similarity_color: string
+  match_reason: string
+  calibration_info: {
+    z_score: number
+    background_mean: number
+    background_std: number
+  }
   rank: number
+  // Optional fields that might be present
+  source?: string
+  source_id?: string
+  content_hash?: string
+  updated_at?: string
+  homepage_url?: string
+  linkedin_url?: string
 }
 
 interface QAResponse {
@@ -136,11 +152,56 @@ function App() {
                           <h3 className="text-2xl font-bold text-gray-900">
                             {startup.name}
                           </h3>
-                          <span className="text-sm text-gray-500 bg-gray-100 px-3 py-1 rounded-full">
-                            Rank #{startup.rank} (Score: {startup.similarity_score.toFixed(3)})
-                          </span>
+                          <div className="text-right">
+                            <div className="text-sm text-gray-500 bg-gray-100 px-3 py-1 rounded-full mb-2">
+                              Rank #{startup.rank}
+                            </div>
+                            <div className={`text-lg font-bold px-3 py-2 rounded-lg ${
+                              startup.similarity_color === '🟢' ? 'bg-green-100 text-green-800' :
+                              startup.similarity_color === '🟡' ? 'bg-yellow-100 text-yellow-800' :
+                              startup.similarity_color === '🟠' ? 'bg-orange-100 text-orange-800' :
+                              'bg-red-100 text-red-800'
+                            }`}>
+                              {startup.similarity_color} {startup.similarity_percentage}% - {startup.similarity_label}
+                            </div>
+                          </div>
                         </div>
                         <p className="text-gray-700 text-lg mb-6 leading-relaxed">{startup.description}</p>
+                        
+                        {/* Match Reason & Calibration Info */}
+                        <div className="mb-6 space-y-3">
+                          <div className="p-4 bg-blue-50 rounded-lg border-l-4 border-blue-400">
+                            <p className="text-blue-800 font-medium">
+                              💡 {startup.match_reason}
+                            </p>
+                          </div>
+                          
+                          <div className="p-4 bg-gray-50 rounded-lg border-l-4 border-gray-400">
+                            <div className="text-gray-700 text-sm">
+                              <div className="font-medium mb-2">📊 Calibration Details:</div>
+                              <div className="grid grid-cols-3 gap-4 text-xs">
+                                <div>
+                                  <span className="font-medium">Z-Score:</span>
+                                  <div className={`font-bold ${
+                                    Math.abs(startup.calibration_info.z_score) > 2 ? 'text-green-600' :
+                                    Math.abs(startup.calibration_info.z_score) > 1 ? 'text-yellow-600' : 'text-red-600'
+                                  }`}>
+                                    {startup.calibration_info.z_score}
+                                  </div>
+                                </div>
+                                <div>
+                                  <span className="font-medium">Background μ:</span>
+                                  <div className="text-gray-600">{startup.calibration_info.background_mean}</div>
+                                </div>
+                                <div>
+                                  <span className="font-medium">Background σ:</span>
+                                  <div className="text-gray-600">{startup.calibration_info.background_std}</div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        
                         <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
                           <div className="bg-blue-50 p-4 rounded-lg">
                             <span className="font-semibold text-blue-600 block mb-2">Industry</span>

@@ -17,7 +17,23 @@ export interface Startup {
   founded: number
   team_size: number
   similarity_score: number
+  similarity_percentage: number
+  similarity_label: string
+  similarity_color: string
+  match_reason: string
+  calibration_info: {
+    z_score: number
+    background_mean: number
+    background_std: number
+  }
   rank: number
+  // Optional fields that might be present
+  source?: string
+  source_id?: string
+  content_hash?: string
+  updated_at?: string
+  homepage_url?: string
+  linkedin_url?: string
 }
 
 export interface QAResponse {

@@ -11,51 +11,73 @@ A retrieval-augmented generation (RAG) service that ingests startup data, indexe
 - **Real-time Data**: Automatically fetches latest startup data from Crunchbase API
 - **Scheduled Updates**: Background scheduler keeps data fresh every 12 hours
 - **Smart Caching**: Only re-embeds changed startup data to save costs
+- **Error Handling**: Robust error handling with retry logic and graceful fallbacks
 
 ## Architecture
 
 ```
 startup-discovery/
-├── backend/           # FastAPI backend with RAG functionality
-│   ├── app.py        # Main FastAPI application
-│   ├── ingest.py     # Data ingestion and FAISS indexing
-│   ├── rag.py        # RAG pipeline implementation
-│   ├── models.py     # Pydantic models and data structures
-│   └── data/         # Startup dataset
-└── frontend/         # React frontend (optional)
+├── README.md                    # Project documentation
+├── backend/                     # FastAPI backend with RAG functionality
+│   ├── app.py                  # Main FastAPI application with endpoints
+│   ├── ingest.py               # Data ingestion, FAISS indexing, and API integration
+│   ├── rag.py                  # RAG pipeline implementation
+│   ├── models.py               # Pydantic models and data structures
+│   ├── requirements.txt        # Python dependencies
+│   ├── .env.example           # Environment variables template
+│   ├── data/                   # Startup dataset and fallback data
+│   │   └── startups.csv        # Sample startup data (5 companies)
+│   └── index/                  # FAISS index and metadata (auto-generated)
+│       ├── faiss.index         # Vector embeddings index
+│       └── meta.jsonl          # Startup metadata and embeddings
+└── frontend/                   # Modern React frontend
+    ├── package.json            # Node.js dependencies
+    ├── src/                    # React source code
+    │   ├── App.tsx            # Main application component
+    │   ├── api.ts             # API client for backend communication
+    │   └── main.tsx           # React entry point
+    ├── index.html             # HTML template
+    └── tailwind.config.js     # Tailwind CSS configuration
 ```
 
-## Quick Start
+## 🚀 Quick Start
 
-1. **Setup Environment**:
+### Backend Setup
+
+1. **Setup environment and run backend server**:
    ```bash
    cd backend
-   cp env.example .env
-   # Add your OpenAI API key and Crunchbase API key to .env
-   ```
-
-2. **Install Dependencies**:
-   ```bash
+   cp .env.example .env
    pip install -r requirements.txt
-   ```
-
-3. **Ingest Data**:
-   ```bash
    python ingest.py
-   ```
-
-4. **Run Server**:
-   ```bash
    uvicorn app:app --reload
    ```
 
+### Frontend Setup
+
+1. **Install Dependencies and run frontend**:
+   ```bash
+   cd frontend
+   npm install
+   npm run dev
+   ```
 ## API Endpoints
 
 - `GET /search?q=query` - Semantic search for startups
 - `GET /ask?q=query` - LLM-powered Q&A about startups
 - `GET /health` - Health check with sync status
 
-## Crunchbase Integration
+## 🎯 Data Sources & Fallbacks
+
+The system uses a smart fallback strategy to ensure reliable data:
+
+1. **Primary**: Crunchbase API (real-time startup data)
+2. **Fallback**: `startups.csv` (5 sample startups with realistic data)
+3. **Emergency**: Hardcoded samples (2 basic startups as last resort)
+
+This ensures the application always has data to work with, even when external APIs are unavailable.
+
+## 🔗 Crunchbase Integration
 
 The application automatically fetches real-time startup data from Crunchbase API:
 
@@ -73,9 +95,38 @@ The application automatically fetches real-time startup data from Crunchbase API
 
 ## Tech Stack
 
-- **Backend**: Python, FastAPI, FAISS, OpenAI API
-- **Data Processing**: pandas, numpy
-- **Data Sources**: Crunchbase API, Web scraping fallback
-- **Scheduling**: APScheduler for background updates
-- **Frontend**: React, TypeScript (optional)
+### Backend
+- **Python 3.8+**: Core runtime
+- **FastAPI**: Modern, fast web framework
+- **FAISS**: Vector similarity search and clustering
+- **OpenAI API**: Text embeddings and LLM completions
+- **Pandas & NumPy**: Data processing and manipulation
+- **APScheduler**: Background task scheduling
 
+### Frontend
+- **React 18**: Modern UI framework
+- **TypeScript**: Type-safe development
+- **Tailwind CSS**: Utility-first CSS framework
+- **Vite**: Fast build tool and dev server
+- **Axios**: HTTP client for API communication
+
+### Data & Infrastructure
+- **Crunchbase API**: Real-time startup data
+- **Smart Fallbacks**: CSV data + hardcoded samples
+- **Vector Embeddings**: OpenAI text-embedding-ada-002
+- **LLM**: GPT-3.5-turbo for Q&A generation
+- **Error Handling**: Retry logic with exponential backoff
+
+## Testing & Demo
+
+### Quick Test
+1. Start the backend: `cd backend && uvicorn app:app --reload`
+2. Start the frontend: `cd frontend && npm run dev`
+3. Open your browser and test the search functionality
+4. Try asking questions about the available startups
+
+### Sample Queries
+- **Search**: "AI companies", "healthcare startups", "fintech companies"
+- **Questions**: "What are the most funded startups?", "Which startups are in healthcare?"
+
+## 🔧 Troubleshooting
